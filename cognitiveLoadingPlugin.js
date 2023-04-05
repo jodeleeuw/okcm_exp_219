@@ -219,8 +219,10 @@ var jsPsychCognitiveLoading = (function (jspsych) {
               circles.forEach(circle => circle.classList.remove('clickable'));
               for(const shape in trial.shape_locations) {
                 let shapeIndex = trial.shape_locations[shape];
-                let shapeTarget = display_element.querySelector('.circle'+shapeIndex);
-                shapeTarget.innerHTML=shapeFinder[shape].svg;
+                if(shapeIndex!=0){
+                  let shapeTarget = display_element.querySelector('.circle'+shapeIndex);
+                  shapeTarget.innerHTML=shapeFinder[shape].svg;
+                }
               }
               trial_data.correct = index == keyShape.location;
             }
