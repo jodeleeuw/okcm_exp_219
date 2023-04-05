@@ -182,7 +182,7 @@ var jsPsychCuriosity = (function (jspsych) {
           }
           .card .back {
             transform: rotateY(180deg);
-            background-color: blue;
+            background-color: #AAAAAA;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -214,6 +214,20 @@ var jsPsychCuriosity = (function (jspsych) {
           }
           #key {
             height: 100%;
+            filter: drop-shadow(0 0 0 rgba(245, 228, 39, 0.92));
+            animation: pulse 0.5s ease-in-out 5;
+          }
+
+          @keyframes pulse {
+            0% {
+              filter: drop-shadow(0 0 12px rgba(245, 228, 39, 0.42));
+            }
+            50% {
+              filter: drop-shadow(0 0 18px rgba(245, 228, 39, 0.92));
+            }
+            100% {
+              filter: drop-shadow(0 0 12px rgba(245, 228, 39, 0.42));
+            }
           }
         </style>
       `;
@@ -232,6 +246,7 @@ var jsPsychCuriosity = (function (jspsych) {
       container.style.backgroundImage = `url(${backdrop_file})`;
 
       cards.forEach(card => {
+        let cardBack = card.querySelector('.back');
         let first_click = true;
         card.addEventListener('click', () => {
           if(first_click){
@@ -249,6 +264,7 @@ var jsPsychCuriosity = (function (jspsych) {
           }
           if(flip_count == key_num){
             card.querySelectorAll('.back')[0].innerHTML = '<img src="./img/KEY.png" alt="KEY" id="key">';
+            cardBack.style.backgroundColor = 'blue';
             button.disabled = false;
           }
           if (!card.classList.contains('flipped')) {
