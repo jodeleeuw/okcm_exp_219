@@ -229,6 +229,23 @@ var jsPsychCuriosity = (function (jspsych) {
               filter: drop-shadow(0 0 12px rgba(245, 228, 39, 0.42));
             }
           }
+
+          #continue-btn {
+            padding: 8px 14px;
+            font-size: 14px;
+            transition: font-size 0.5s ease-out;
+          }
+          #continue-btn:disabled {
+            padding: 8px 14px;
+            font-size: 14px;
+            transition: font-size 0.5s ease-out;
+            background-color: #ddd;
+          }
+          #continue-btn.glow {
+            font-size: 18px;
+            filter: drop-shadow(0 0 0 rgba(245, 228, 39, 0.92));
+            animation: pulse 2s ease-in-out infinite;
+          }
         </style>
       `;
 
@@ -267,6 +284,7 @@ var jsPsychCuriosity = (function (jspsych) {
             card.querySelectorAll('.back')[0].innerHTML = '<img src="./img/KEY.png" alt="KEY" id="key">';
             cardBack.style.backgroundColor = 'blue';
             button.disabled = false;
+            button.classList.add('glow');
             vanishTime += 500; // number of extra milliseconds for key card
           }
           if (!card.classList.contains('flipped')) {
