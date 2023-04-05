@@ -132,26 +132,6 @@ var jsPsychCuriosity = (function (jspsych) {
             <div class="front"><h1>?</h1></div>
             <div class="back"><h1>X</h1></div>
           </div>
-          <div class="card" id="26">
-            <div class="front"><h1>?</h1></div>
-            <div class="back"><h1>X</h1></div>
-          </div>
-          <div class="card" id="27">
-            <div class="front"><h1>?</h1></div>
-            <div class="back"><h1>X</h1></div>
-          </div>
-          <div class="card" id="28">
-            <div class="front"><h1>?</h1></div>
-            <div class="back"><h1>X</h1></div>
-          </div>
-          <div class="card" id="29">
-            <div class="front"><h1>?</h1></div>
-            <div class="back"><h1>X</h1></div>
-          </div>
-          <div class="card" id="30">
-            <div class="front"><h1>?</h1></div>
-            <div class="back"><h1>X</h1></div>
-          </div>
         </div>
         <br>
         <button id="continue-btn" class="jspsych-btn" disabled>Continue</button>
@@ -161,7 +141,7 @@ var jsPsychCuriosity = (function (jspsych) {
           }
           .grid-container {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             grid-gap: 6px;
             height: 600px;
             margin: auto;
@@ -172,7 +152,7 @@ var jsPsychCuriosity = (function (jspsych) {
             background-position: center; /* Center the image */
             background-repeat: no-repeat; /* Do not repeat the image */
             background-size: cover; /* Resize the background image to cover the entire container */
-            min-width: 80vw;
+            width: 60vw;
           }
           .card {
             background-color: black;
@@ -262,8 +242,8 @@ var jsPsychCuriosity = (function (jspsych) {
             flips.push({
               trial_number: flip_count,
               card_index: index,
-              row: Math.floor(index / 6) + 1,
-              column: (index % 6),
+              row: Math.floor(index / 5) + 1,
+              column: (index % 5),
               timestamp: Math.round(performance.now()-start_time)
             });
           }
