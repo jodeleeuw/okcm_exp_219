@@ -262,10 +262,12 @@ var jsPsychCuriosity = (function (jspsych) {
               timestamp: Math.round(performance.now()-start_time)
             });
           }
+          let vanishTime = 1300;
           if(flip_count == key_num){
             card.querySelectorAll('.back')[0].innerHTML = '<img src="./img/KEY.png" alt="KEY" id="key">';
             cardBack.style.backgroundColor = 'blue';
             button.disabled = false;
+            vanishTime += 500; // number of extra milliseconds for key card
           }
           if (!card.classList.contains('flipped')) {
             card.classList.toggle('flipped');
@@ -275,7 +277,7 @@ var jsPsychCuriosity = (function (jspsych) {
             card.style.transition = 'opacity 0.5s ease-out';
             card.style.opacity = 0;
             card.style.pointerEvents = "none";
-          }, 1300);
+          }, vanishTime);
         });
       });
 
