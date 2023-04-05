@@ -266,7 +266,6 @@ var jsPsychCuriosity = (function (jspsych) {
               column: (index % 6),
               timestamp: Math.round(performance.now()-start_time)
             });
-            console.log(flips);
           }
           if(flip_count == key_num){
             card.querySelectorAll('.back')[0].innerHTML = '<img src="./img/KEY.png" alt="KEY" id="key">';
