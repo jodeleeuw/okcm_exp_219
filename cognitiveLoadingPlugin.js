@@ -138,6 +138,7 @@ var jsPsychCognitiveLoading = (function (jspsych) {
       const pentagon = {color: 'pink', name: 'pentagon', svg: pentagonSVG};
       const star = {color: 'green', name: 'star', svg: starSVG};
       const shapes = [triangle, square, pentagon, star];
+      const shapeFinder = {triangle: triangle, square: square, pentagon: pentagon, star: star};
 
       const instruction = display_element.querySelector('#instruction');
       const button = display_element.querySelector('.continue-btn');
@@ -216,6 +217,11 @@ var jsPsychCognitiveLoading = (function (jspsych) {
                 cross.innerHTML = "Incorrect";
               }
               circles.forEach(circle => circle.classList.remove('clickable'));
+              for(const shape in trial.shape_locations) {
+                let shapeIndex = trial.shape_locations[shape];
+                let shapeTarget = display_element.querySelector('.circle'+shapeIndex);
+                shapeTarget.innerHTML=shapeFinder[shape].svg;
+              }
               trial_data.correct = index == keyShape.location;
             }
           })
