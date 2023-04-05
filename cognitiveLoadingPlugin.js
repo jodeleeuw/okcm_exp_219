@@ -145,6 +145,7 @@ var jsPsychCognitiveLoading = (function (jspsych) {
       const start_time = performance.now();
 
       if(trial.mode=='present'){
+        button.style.display = 'none';
         const shapeLocations = {
           triangle: 0,
           square: 0,
@@ -172,6 +173,12 @@ var jsPsychCognitiveLoading = (function (jspsych) {
         trial_data.locations = shapeLocations;
         trial_data.mode = 'present';
         trial_data.load = load;
+
+        setTimeout(() => {
+          trial_data.total_time = Math.round(performance.now()-start_time);
+          // end trial
+          this.jsPsych.finishTrial(trial_data);
+        }, 5000);
       } else if(trial.mode=='recall'){
         button.disabled = true;
 
@@ -214,13 +221,13 @@ var jsPsychCognitiveLoading = (function (jspsych) {
           })
         })
 
+        button.addEventListener('click', ()=>{
+          trial_data.total_time = Math.round(performance.now()-start_time);
+          // end trial
+          this.jsPsych.finishTrial(trial_data);
+        })
       }
 
-      button.addEventListener('click', ()=>{
-        trial_data.total_time = Math.round(performance.now()-start_time);
-        // end trial
-        this.jsPsych.finishTrial(trial_data);
-      })
     }
   }
   CogntiveLoadingPlugin.info = info;
