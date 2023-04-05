@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Aren't you curious?</title>
+    <script src="https://unpkg.com/jspsych@7.3.1"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.2"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-instructions@1.1.2"></script>
+    <script src="curiosityPlugin.js"></script>
+    <script src="cognitiveLoadingPlugin.js"></script>
+    <link href="https://unpkg.com/jspsych@7.3.1/css/jspsych.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body></body>
+  <script>
+    /* initialize jsPsych */
+    var jsPsych = initJsPsych({
+      on_finish: function() {
+        jsPsych.data.displayData();
+      }
+    });
+
+    var timeline = [];
+    var stimuli = [
+      "IMAGE_1.png",
+      "IMAGE_2.jpeg",
+      "IMAGE_3.png",
+      "IMAGE_4.png",
+      "IMAGE_5.png",
+      "IMAGE_6.png",
+    ];
+
+    var welcome = {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: "Welcome to the experiment. Press any key to begin.",
+    };
+    // timeline.push(welcome);
+
+    var instructions = {
+      type: jsPsychInstructions,
+      pages: ['Instructions...','<p>More instructions blah blah</p><p>blah blah blah descriptive.</p><p>Click the next button to start.</p>'],
+      show_clickable_nav: true
+    };
+    // timeline.push(instructions);
+
+    var load = {
+      type: jsPsychCognitiveLoading,
+      mode: 'present',
+      load: 'high'
+    }
+    timeline.push(load);
+
+    var curious = {
+      type: jsPsychCuriosity,
+      clicks_until_key: 4,
+      image_filepath: 'img/sunset.jpg'
+    }
+    timeline.push(curious);
+
+    var unload = {
+      type: jsPsychCognitiveLoading,
+      mode: 'recall',
+      shape_locations: ()=>{
+        return jsPsych.data.allData.trials.slice(-3)[0].locations;
+      }
+    }
+    timeline.push(unload);
+
+
+    jsPsych.run(timeline);
+  </script>
+</html>
+
