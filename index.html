@@ -20,31 +20,63 @@
 
     var timeline = [];
     var stimuli = [
-      "IMAGE_1.png",
-      "IMAGE_2.jpeg",
-      "IMAGE_3.png",
-      "IMAGE_4.png",
-      "IMAGE_5.png",
-      "IMAGE_6.png",
+      {image: "IMAGE_1.png", id: 1 },
+      {image: "IMAGE_2.jpeg", id: 2 },
+      {image: "IMAGE_3.png", id: 3 },
+      {image: "IMAGE_4.png", id: 4 },
+      {image: "IMAGE_5.png", id: 5 },
+      {image: "IMAGE_6.png", id: 6 }
     ];
     stimuli = jsPsych.randomization.repeat(stimuli, 1);
     const load_order = jsPsych.randomization.repeat(['low', 'high'], 1);
-    const key_locations = jsPsych.randomization.repeat([4, 5, 5, 6, 6, 8], 1);
+    const key_locations = jsPsych.randomization.repeat([5, 5, 6, 6, 7, 7], 1);
 
     var welcome = {
       type: jsPsychHtmlKeyboardResponse,
       stimulus: "Welcome to the experiment. Press any key to begin.",
     };
-    // timeline.push(welcome);
+    timeline.push(welcome);
 
     var instructions = {
       type: jsPsychInstructions,
       pages: ['Instructions...','<p>More instructions blah blah</p><p>blah blah blah descriptive.</p><p>Click the next button to start.</p>'],
       show_clickable_nav: true
     };
-    // timeline.push(instructions);
+    timeline.push(instructions);
+
+    var practice_trial = {
+      timeline: [
+        {
+          type: jsPsychCognitiveLoading,
+          mode: 'present',
+          load: load_order[0]
+        },
+        {
+          type: jsPsychCuriosity,
+          clicks_until_key: key_locations[i],
+          image_filepath: `img/sunset.jpg`
+        },
+        {
+          type: jsPsychCognitiveLoading,
+          mode: 'recall',
+          shape_locations: ()=>{
+            return jsPsych.data.allData.trials.slice(-2)[0].locations;
+          }
+        }
+      ]
+    }
+    timeline.push(practice_trial);
+
+    var mid_trial_transition = {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: "In the remaining rounds, you'll see a different number of shapes. Press any key when you're ready to continue."
+    }
 
     for(var i = 0; i<6; i++){
+      if(i==3){
+        timeline.push(mid_trial_transition);
+      }
+
       var load = {
         type: jsPsychCognitiveLoading,
         mode: 'present',
@@ -55,7 +87,7 @@
       var curious = {
         type: jsPsychCuriosity,
         clicks_until_key: key_locations[i],
-        image_filepath: `curious_images/${stimuli[i]}`
+        image_filepath: `curious_images/${stimuli[i].image}`
       }
       timeline.push(curious);
 

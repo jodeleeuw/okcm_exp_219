@@ -147,7 +147,7 @@ var jsPsychCuriosity = (function (jspsych) {
             margin: auto;
             perspective: 800px;
             background-image: url("img/sunset.jpeg"); /* default background image */
-            background-color: #cccccc; /* Used if the image is unavailable */
+            background-color: #818791; /* Used if the image is unavailable */
             height: 80vh;
             background-position: center; /* Center the image */
             background-repeat: no-repeat; /* Do not repeat the image */
