@@ -173,7 +173,7 @@ var jsPsychCognitiveLoading = (function (jspsych) {
         }
         trial_data.locations = shapeLocations;
         trial_data.mode = 'present';
-        trial_data.load = load;
+        trial_data.load = trial.load;
 
         setTimeout(() => {
           trial_data.total_time = Math.round(performance.now()-start_time);

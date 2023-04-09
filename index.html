@@ -6,9 +6,13 @@
     <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.2"></script>
     <script src="https://unpkg.com/@jspsych/plugin-instructions@1.1.2"></script>
     <script src="https://unpkg.com/@jspsych/plugin-preload@1.1.2"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-survey@0.2.1"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-fullscreen@1.1.2"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.1.2"></script>
     <script src="curiosityPlugin.js"></script>
     <script src="cognitiveLoadingPlugin.js"></script>
     <link href="https://unpkg.com/jspsych@7.3.1/css/jspsych.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://unpkg.com/@jspsych/plugin-survey@0.2.1/css/survey.css">
   </head>
   <body></body>
   <script>
@@ -20,6 +24,12 @@
     });
     var timeline = [];
 
+    var enter_fullscreen = {
+      type: jsPsychFullscreen,
+      fullscreen_mode: true
+    }
+    timeline.push(enter_fullscreen);
+
     var preload = {
       type: jsPsychPreload,
       images: ['curious_images/IMAGE_1.png',
@@ -29,7 +39,11 @@
                'curious_images/IMAGE_5.png',
                'curious_images/IMAGE_6.png',
                'img/KEY.png',
-               'img/sunset.jpg'
+               'img/sunset.jpg',
+               'img/load.png',
+               'img/flip.png',
+               'img/recall.png',
+               'img/key_found.png',
       ]
     };
     timeline.push(preload);
@@ -52,9 +66,35 @@
     };
     timeline.push(welcome);
 
+    var intro_image_style = `
+      max-width: 500px;
+      box-shadow: 0 1px 15px #555;
+      border-radius: 10px;
+      margin-top: 10px;
+    `
     var instructions = {
       type: jsPsychInstructions,
-      pages: ['Instructions...','<p>More instructions blah blah</p><p>blah blah blah descriptive.</p><p>Click the next button to start.</p>'],
+      pages: [
+        `<div style="max-width: 75vw"><p>On the next few screens, we will walk you through the instructions with some images.</p>
+        <p>Then you’ll have a chance to practice the procedure in one trial.</p></div>`,
+
+        `<div style="max-width: 75vw"><p>First, you will be asked to remember the position of a shape or several shapes arranged as below. There may be a different numbers of shapes in different trials. <u>Please do this by memory; we ask that you do not write anything down to keep track.</u> The shapes will display for <b>5 seconds</b> before automatically continuing.</p>
+        <p>See photo below for reference.</p>
+        <img class="intro-pic" style="${intro_image_style}" src="img/load.png"></div>`,
+
+        `<div style="max-width: 75vw"><p>Then, you will be presented with a grid of cards, as seen in the image below. The "continue" button will be deactivated. You need to find the key in order to activate it. By clicking on cards, they will flip over, revealing either the key or a black x.</p>
+        <p>See photo below for reference.</p>
+        <img class="intro-pic" style="${intro_image_style}" src="img/flip.png"></div>`,
+
+        `<div style="max-width: 75vw"><p>After finding the key, the ‘continue’ button will be activated. You can choose to proceed. You are still able to flip cards over, too, before continuing.</p>
+        <p>See photo below for reference.</p>
+        <img class="intro-pic" style="${intro_image_style}" src="img/key_found.png"></div>`,
+
+        `<div style="max-width: 75vw"><p>Finally, you will be asked to recall the position of one of the shapes from earlier. We'll tell you if you get it right.</p>
+        <p>See photo below for reference.</p>
+        <img class="intro-pic" style="${intro_image_style}" src="img/recall.png"></div>`,
+        `<p>Feel free to click back to review these directions, and, when ready, click 'next' to begin a <em>practice round!</em></p>`,
+      ],
       show_clickable_nav: true
     };
     timeline.push(instructions);
@@ -68,7 +108,7 @@
         },
         {
           type: jsPsychCuriosity,
-          clicks_until_key: key_locations[i],
+          clicks_until_key: 3,
           image_filepath: `img/sunset.jpg`
         },
         {
@@ -82,14 +122,35 @@
     }
     timeline.push(practice_trial);
 
+    var post_practice = {
+      type: jsPsychHtmlButtonResponse,
+      choices: ['Ready to Begin'],
+      stimulus: `
+        <p>That concludes the practice round. Now on to the real thing! Remember:</p>
+        <ul style='list-style: none'>
+        <li><em>Please use your memory, and <b><u>not</u> pen and paper</b> to remember where the shapes are!</em></li>
+        <li><em>Once you find the key, the continue button will be unlocked, and it will stay unlocked! <u>You can continue immediately or flip more cards.</u></li>
+        <li><em>You only have <b>five seconds</b> to remember the locations of the shapes, so pay attention :)</em></li>
+        </ul>
+      `
+    }
+    timeline.push(post_practice);
+
     var mid_trial_transition = {
       type: jsPsychHtmlKeyboardResponse,
-      stimulus: "In the remaining rounds, you'll see a different number of shapes. Press any key when you're ready to continue."
+      stimulus: "Congratulations! You are halfway done. Starting next trial, the amount of the shapes you are asked to remember will be changed. Press any key when you're ready to continue."
+    }
+
+    var gap = {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: `Press any key to continue to the next trial.`
     }
 
     for(var i = 0; i<6; i++){
       if(i==3){
         timeline.push(mid_trial_transition);
+      } else if(i!=0) {
+        timeline.push(gap);
       }
 
       var load = {
@@ -116,6 +177,54 @@
       timeline.push(unload);
     }
 
+    var survey = {
+      type: jsPsychSurvey,
+      pages: [
+        [
+          {
+            type: 'html',
+            prompt: '<p>Congratulations! You have finished the experimental trials!</p><p>Here are a few additional questions.</p>',
+          },
+          {
+            type: 'text',
+            prompt: "Tell us in a few words, in what situations during this experiment were you most curious?",
+            name: 'curious_situations',
+            textbox_rows: 2,
+            required: true
+          },
+          {
+            type: 'likert',
+            prompt: "Rate your level of curiosity towards the pictures under the cards on a scale of 1-5: 1 suggests ‘not curious at all’ and 5 suggests ‘absolutely curious’.",
+            name: 'curiosity_level',
+            required: true,
+            likert_scale_values: [
+              {value: 1, text: "1"},
+              {value: 2, text: "2"},
+              {value: 3, text: "3"},
+              {value: 4, text: "4"},
+              {value: 5, text: "5"}
+            ]
+          }
+        ]
+      ],
+    };
+    timeline.push(survey);
+
+    var reveal = {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: `<div style='max-width: 60vw'><p>Congratulations, the experiment is over! Your honest responses will be of immense value for our scientific investigation.<br><br>
+        In this study, we are examining the effects of cognitive load on information-seeking behavior. Information-seeking has widely been used as an indicator of curiosity. When someone experiences high cognitive load, they are dividing up cognitive processing resources between two or more different tasks. In our study, participants face a strain on their visual-spatial processing as they attempt to remember the location of several shapes while also seeking out a yellow key in a card-flipping game. Unbeknownst to the participant, underneath the cards there is a piloted-tested novel image. By flipping cards in search of the yellow key, the participant will gradually reveal this underlying image. We consider the number of cards a participant flips after already finding the key to reflect the participant’s curiosity. We suspect that participants who were asked to memorize the locations of more shapes (thus having higher cognitive load) will be less curious to investigate what the concealed images contain. <br><br>
+        Please note that all responses will be kept confidential and used only for research purposes.Thank you for your time and effort.</p></div>
+      `
+    }
+    timeline.push(reveal);
+
+    var exit_fullscreen = {
+      type: jsPsychFullscreen,
+      fullscreen_mode: false,
+      delay_after: 0
+    }
+    timeline.push(exit_fullscreen);
 
     jsPsych.run(timeline);
   </script>

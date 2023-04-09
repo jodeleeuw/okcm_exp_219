@@ -279,13 +279,13 @@ var jsPsychCuriosity = (function (jspsych) {
               timestamp: Math.round(performance.now()-start_time)
             });
           }
-          let vanishTime = 1300;
+          let vanishTime = 500;
           if(flip_count == key_num){
             card.querySelectorAll('.back')[0].innerHTML = '<img src="./img/KEY.png" alt="KEY" id="key">';
             cardBack.style.backgroundColor = 'blue';
             button.disabled = false;
             button.classList.add('glow');
-            vanishTime += 500; // number of extra milliseconds for key card
+            vanishTime += 800; // number of extra milliseconds for key card
           }
           if (!card.classList.contains('flipped')) {
             card.classList.toggle('flipped');
