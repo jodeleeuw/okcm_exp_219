@@ -17,11 +17,18 @@
   <body></body>
   <script>
     /* initialize jsPsych */
-    var jsPsych = initJsPsych({
-      on_finish: function() {
-        jsPsych.data.displayData();
-      }
+    var jsPsych = initJsPsych();
+
+    // capture info from Prolific
+    var subject_id = jsPsych.data.getURLVariable('PROLIFIC_PID');
+    var study_id = jsPsych.data.getURLVariable('STUDY_ID');
+    var session_id = jsPsych.data.getURLVariable('SESSION_ID');
+    jsPsych.data.addProperties({
+      subject_id: subject_id,
+      study_id: study_id,
+      session_id: session_id
     });
+
     var timeline = [];
 
     var enter_fullscreen = {
@@ -256,18 +263,6 @@
     };
     timeline.push(survey);
 
-    var reveal = {
-      type: jsPsychHtmlKeyboardResponse,
-      stimulus: `<div style='max-width: 60vw'><p>Congratulations, the experiment is over! Your honest responses will be of immense value for our scientific investigation.<br><br>
-        In this study, we are examining the effects of cognitive load on information-seeking behavior. Information-seeking has widely been used as an indicator of curiosity. When someone experiences high cognitive load, they are dividing up cognitive processing resources between two or more different tasks. In our study, participants face a strain on their visual-spatial processing as they attempt to remember the location of several shapes while also seeking out a yellow key in a card-flipping game. Unbeknownst to the participant, underneath the cards there is a piloted-tested novel image. By flipping cards in search of the yellow key, the participant will gradually reveal this underlying image. We consider the number of cards a participant flips after already finding the key to reflect the participant’s curiosity. We suspect that participants who were asked to memorize the locations of more shapes (thus having higher cognitive load) will be less curious to investigate what the concealed images contain. <br><br>
-        Please note that all responses will be kept confidential and used only for research purposes.Thank you for your time and effort.</p></div>
-      `,
-      data: {
-        task: 'reveal'
-      }
-    }
-    timeline.push(reveal);
-
     var exit_fullscreen = {
       type: jsPsychFullscreen,
       fullscreen_mode: false,
@@ -277,6 +272,22 @@
       }
     }
     timeline.push(exit_fullscreen);
+
+    var reveal = {
+      type: jsPsychHtmlButtonResponse,
+      stimulus: `<div style='max-width: 60vw'><p>Congratulations, the experiment is over! <u>Read on to learn about the experiment, or <b>click the button to return to Prolific</b></u>. Your honest responses will be of immense value for our scientific investigation.<br><br>
+        In this study, we are examining the effects of cognitive load on information-seeking behavior. Information-seeking has widely been used as an indicator of curiosity. When someone experiences high cognitive load, they are dividing up cognitive processing resources between two or more different tasks. In our study, participants face a strain on their visual-spatial processing as they attempt to remember the location of several shapes while also seeking out a yellow key in a card-flipping game. Unbeknownst to the participant, underneath the cards there is a piloted-tested novel image. By flipping cards in search of the yellow key, the participant will gradually reveal this underlying image. We consider the number of cards a participant flips after already finding the key to reflect the participant’s curiosity. We suspect that participants who were asked to memorize the locations of more shapes (thus having higher cognitive load) will be less curious to investigate what the concealed images contain. <br><br>
+        Please note that all responses will be kept confidential and used only for research purposes.Thank you for your time and effort.</p></div>
+      `,
+      choices: ['Return to Prolific'],
+      data: {
+        task: 'reveal'
+      },
+      on_finish: function(){
+        window.location = "https://google.com" // REPLACE WITH PROLIFIC REDIRECT LINK
+      }
+    }
+    timeline.push(reveal);
 
     jsPsych.run(timeline);
   </script>

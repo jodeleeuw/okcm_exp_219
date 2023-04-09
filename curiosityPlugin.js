@@ -16,12 +16,13 @@ var jsPsychCuriosity = (function (jspsych) {
   };
 
   /**
-   * **PLUGIN-NAME**
+   * **Curiosity-Plugin**
    *
-   * SHORT PLUGIN DESCRIPTION
+   * A participant flips over cards, revealing a background image. They cannot
+   * continue until they have found a key card, but any extra cards flipped over
+   * after the key is found are counted and recorded.
    *
-   * @author YOUR NAME
-   * @see {@link https://DOCUMENTATION_URL DOCUMENTATION LINK TEXT}
+   * @author Miles Bader
    */
   class CuriosityPlugin {
     constructor(jsPsych) {

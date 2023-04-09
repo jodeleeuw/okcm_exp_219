@@ -22,10 +22,10 @@ var jsPsychCognitiveLoading = (function (jspsych) {
   /**
    * **Cognitive-Loading-Plugin**
    *
-   * SHORT PLUGIN DESCRIPTION
+   * Asks the participant to remember the location of either one or four shapes,
+   * and then asks the participant to recall the locations
    *
-   * @author YOUR NAME
-   * @see {@link https://DOCUMENTATION_URL DOCUMENTATION LINK TEXT}
+   * @author Miles Bader
    */
   class CogntiveLoadingPlugin {
     constructor(jsPsych) {
