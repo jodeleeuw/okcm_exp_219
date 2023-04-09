@@ -195,6 +195,8 @@ var jsPsychCognitiveLoading = (function (jspsych) {
         const keyShape = answerKey[Math.floor(Math.random() * answerKey.length)];
         trial_data.shapeAsked = keyShape.shape;
         trial_data.correctAnswer = keyShape.location;
+        trial_data.mode='recall';
+        trial_data.load = trial.load;
 
 
         // Ask where that shape was

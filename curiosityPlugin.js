@@ -301,7 +301,9 @@ var jsPsychCuriosity = (function (jspsych) {
 
       button.addEventListener('click', ()=>{
         trial_data.flips_count = flip_count;
-        trial_data.flips = flips
+        trial_data.flips = flips;
+        trial_data.key_clicks = key_num;
+        trial_data.extra_clicks = flip_count - key_num;
         // end trial
         this.jsPsych.finishTrial(trial_data);
       })
