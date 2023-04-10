@@ -9,6 +9,7 @@
     <script src="https://unpkg.com/@jspsych/plugin-survey@0.2.1"></script>
     <script src="https://unpkg.com/@jspsych/plugin-fullscreen@1.1.2"></script>
     <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.1.2"></script>
+    <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe"></script>
     <script src="curiosityPlugin.js"></script>
     <script src="cognitiveLoadingPlugin.js"></script>
     <link href="https://unpkg.com/jspsych@7.3.1/css/jspsych.css" rel="stylesheet" type="text/css" />
@@ -28,6 +29,8 @@
       study_id: study_id,
       session_id: session_id
     });
+    if(subject_id==undefined) {subject_id = jsPsych.randomization.randomID(10);}
+    const filename = `${subject_id}.csv`;
 
     var timeline = [];
 
@@ -272,6 +275,14 @@
       }
     }
     timeline.push(exit_fullscreen);
+
+    const save_data = {
+      type: jsPsychPipe,
+      action: "save",
+      experiment_id: "S1c6boVRyz9u",
+      filename: filename,
+      data_string: ()=>jsPsych.data.get().csv()
+    };
 
     var reveal = {
       type: jsPsychHtmlButtonResponse,
