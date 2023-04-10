@@ -283,6 +283,7 @@
       filename: filename,
       data_string: ()=>jsPsych.data.get().csv()
     };
+    timeline.push(save_data);
 
     var reveal = {
       type: jsPsychHtmlButtonResponse,
